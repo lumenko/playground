@@ -1,3 +1,5 @@
+#include <errno.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "account/account.h"
@@ -43,16 +45,28 @@ static void displayMenu(void) {
 }
 
 static int getMenuChoice(void) {
-    int choice;
+    char buffer[32];
+
     printf(COLOR_BOLD "\nUnesite Vas izbor [0-7]: " COLOR_RESET);
 
-    if (scanf("%d", &choice) != 1) {
-        while (getchar() != '\n') {}
+    if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
         return -1;
     }
 
-    while (getchar() != '\n') {}
-    return choice;
+    char *endPtr;
+    errno = 0;
+
+    const long choice = strtol(buffer, &endPtr, 10);
+
+    if (endPtr == buffer || errno == ERANGE) {
+        return -1;
+    }
+
+    if (choice < INT_MIN || choice > INT_MAX) {
+        return -1;
+    }
+
+    return (int)choice;
 }
 
 int main(void) {
