@@ -3,3 +3,17 @@
 //
 
 #include "storage.h"
+
+int saveAccountToFile(Account *acc) {
+    return 1;
+}
+
+int updateAccountInFile(Account *acc) {
+    return 1;
+}
+
+void loadAllAccounts() {
+}
+
+void readTransactionHistory(char *accNum) {
+}

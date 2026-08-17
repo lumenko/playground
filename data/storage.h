@@ -9,10 +9,10 @@
 
 #endif //PLAYGROUND_STORAGE_H
 
-int saveAccountToFile(const Account* acc);
+int saveAccountToFile(Account* acc);
 
-int updateAccountInFile(const Account* acc);
+int updateAccountInFile(Account* acc);
 
 void loadAllAccounts();
 
-void readTransactionHistory(const char* accNum);
+void readTransactionHistory(char* accNum);

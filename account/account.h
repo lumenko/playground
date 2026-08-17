@@ -4,20 +4,23 @@
 
 #ifndef PLAYGROUND_ACCOUNT_H
 #define PLAYGROUND_ACCOUNT_H
-#include <stddef.h>
 
 #endif //PLAYGROUND_ACCOUNT_H
+#include <stddef.h>
 
-/**
- *
- */
-typedef struct {
+#ifndef ACCOUNT_ACCOUNT_H
+#define ACCOUNT_ACCOUNT_H
+
+typedef struct Account {
     char *account_number;
     char *name;
     char *pin;
     double balance;
     int is_active;
 } Account;
+
+#endif
+
 
 Account *createAccount(char *name, char pin[5], double balance, int is_active);
 
