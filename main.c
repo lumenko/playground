@@ -2,20 +2,15 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include "account/account.h"
 #include "data/storage.h"
 #include "transaction/transaction.h"
+#include "display.h"
 
 #define TRUE 1
-
-#define COLOR_RESET   "\033[0m"
-#define COLOR_BOLD    "\033[1m"
-#define COLOR_CYAN    "\033[36m"
-#define COLOR_GREEN   "\033[32m"
-#define COLOR_YELLOW  "\033[33m"
-#define COLOR_RED     "\033[31m"
-#define COLOR_BLUE    "\033[34m"
-#define COLOR_GRAY    "\033[90m"
+#define MAX_NAME_LEN 50
 
 static void clearScreen(void) {
     #ifdef _WIN32
@@ -42,6 +37,35 @@ static void displayMenu(void) {
     printf(COLOR_CYAN "----------------------------------------------------\n" COLOR_RESET);
     printf("  " COLOR_RED "[0]" COLOR_RESET " Izlaz iz aplikacije\n");
     printf(COLOR_CYAN "====================================================\n" COLOR_RESET);
+}
+
+static void createAccountMenu(void) {
+    char *name = malloc(MAX_NAME_LEN * sizeof(char)), *pin = "1234";
+    if (name == NULL) {
+        printf("Nema dovoljno memorije.\n");
+        return;
+    }
+    memset(name, 0, MAX_NAME_LEN);
+
+    printf("Ime i prezime:\n");
+    if (fgets(name, MAX_NAME_LEN, stdin) != NULL) {
+        name[strcspn(name, "\n")] = '\0';
+    }
+
+    const Account *account = createAccount(name, pin, 0.0, 1);
+    if (account == NULL) {
+        printf("Doslo je do greske.\n");
+        free(name);
+        name = NULL;
+        free((void*)account);
+        return;
+    }
+    free(name);
+    name = NULL;
+
+    printAccount(account);
+
+    free((void *)account);
 }
 
 static int getMenuChoice(void) {
@@ -101,7 +125,7 @@ int main(void) {
                 break;
             case 6:
                 printf(COLOR_BLUE "\n[REGISTRACIJA RACUNA]\n" COLOR_RESET);
-                // Poziv funkcije: createNewAccount();
+                createAccountMenu();
                 break;
             case 7:
                 printf(COLOR_BLUE "\n[ADMIN: PREGLED SVIH RACUNA]\n" COLOR_RESET);

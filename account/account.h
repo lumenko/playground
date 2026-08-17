@@ -12,9 +12,9 @@
 #define ACCOUNT_ACCOUNT_H
 
 typedef struct Account {
-    char *account_number;
-    char *name;
-    char *pin;
+    char account_number[19];
+    char name[50];
+    char pin[5];
     double balance;
     int is_active;
 } Account;
@@ -22,7 +22,7 @@ typedef struct Account {
 #endif
 
 
-Account *createAccount(char *name, char pin[5], double balance, int is_active);
+Account *createAccount(const char *name, char pin[5], double balance, int is_active);
 
 Account *findAccount(const char *accNum);
 

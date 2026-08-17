@@ -5,29 +5,27 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
+#include "../display.h"
 
-// ANSI Kodovi za boje u terminalu
-#define COLOR_RESET   "\033[0m"
-#define COLOR_BOLD    "\033[1m"
-#define COLOR_CYAN    "\033[36m"
-#define COLOR_GREEN   "\033[32m"
-#define COLOR_RED     "\033[31m"
-#define COLOR_YELLOW  "\033[33m"
-#define COLOR_GRAY    "\033[90m"
-
-Account * createAccount(char *name, char *pin, const double balance, const int is_active)
+Account * createAccount(const char *name, char pin[5], const double balance, const int is_active)
 {
-    Account *account = NULL;
+    Account *account = malloc(sizeof(Account));
+    if (account == NULL) {
+        return NULL;
+    }
+    memset(account, 0, sizeof(Account));
 
-    char accNum[19];
     const int currentUserId = 42;
 
-    account->name = name;
+    strcpy(account->name, name);
+    strcpy(account->pin, pin);
+
     account->balance = balance;
     account->is_active = is_active;
-    account->pin = pin;
-    account->account_number = createAccountNumber(accNum, sizeof(accNum), currentUserId);
+
+    createAccountNumber(account->account_number, sizeof(account->account_number), currentUserId);
 
     return account;
 }
@@ -82,8 +80,6 @@ unsigned int getSecureRandomNumber(const unsigned int max) {
     if (urandom) {
         fread(&randVal, sizeof(randVal), 1, urandom);
         fclose(urandom);
-    } else {
-        randVal = (unsigned int)rand();
     }
 
     return randVal % max;

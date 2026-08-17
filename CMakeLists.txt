@@ -10,4 +10,5 @@ add_executable(playground main.c
         transaction/transaction.c
         transaction/transaction.h
         data/storage.c
-        data/storage.h)
+        data/storage.h
+        display.h)
