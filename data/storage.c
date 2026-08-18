@@ -6,7 +6,6 @@
 #include "../account/account.h"
 
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
 
 #define ACCOUNTS_FILE "accounts.bin"
@@ -36,7 +35,6 @@ int load_account_from_file(const char *account_number, account *out_account) {
     }
 
     account tmp_account;
-
     while (fread(&tmp_account, sizeof(account), 1, file) == 1) {
         if (strcmp(tmp_account.account_number, account_number) == 0) {
             *out_account = tmp_account;
