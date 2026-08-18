@@ -20,7 +20,7 @@ static void clear_screen(void) {
     #endif
 }
 
-static void displayMenu(void) {
+static void display_menu(void) {
     printf(COLOR_CYAN COLOR_BOLD);
     printf("====================================================\n");
     printf("            BANKARSKI UPRAVLJACKI SISTEM            \n");
@@ -125,7 +125,7 @@ int main(void) {
 
     while (running) {
         clear_screen();
-        displayMenu();
+        display_menu();
 
         const int choice = get_menu_choice();
 

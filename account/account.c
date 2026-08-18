@@ -37,13 +37,6 @@ account * create_account(const char *name, char pin[5], const double balance, co
     return acc;
 }
 
-account * find_account(const char *accNum)
-{
-    account *acc = NULL;
-
-    return acc;
-}
-
 void print_account(const account *acc)
 {
     const char* status_str = acc->is_active ? "AKTIVAN" : "BLOKIRAN";
@@ -73,9 +66,9 @@ char *create_account_number(char *buffer, const size_t buffer_size, const int ne
         return NULL;
     }
 
-    const unsigned int randomPart = get_secure_random_number(100);
+    const unsigned int random_part = get_secure_random_number(100);
 
-    snprintf(buffer, buffer_size, "840-%06d%04d-01", next_id, randomPart);
+    snprintf(buffer, buffer_size, "840-%06d%04d-01", next_id, random_part);
 
     return buffer;
 }

@@ -9,26 +9,26 @@
 
 typedef struct {
     int day, month, year;
-} Date;
+} date;
 
 typedef enum {
-    TRANSACTION_DEPOSIT,
-    TRANSACTION_WITHDRAW,
-    TRANSACTION_TRANSFER
-} TransactionType;
+    transaction_deposit,
+    transaction_withdraw,
+    transaction_transfer
+} transaction_type;
 
 typedef struct {
     int transaction_id;
     char account_sender[19];
-    TransactionType type;
+    transaction_type type;
     double amount;
-    Date date;
-} Transaction;
+    date date;
+} transaction;
 
-int depositMoney(const char* accNum, double amount);
+int deposit_money(const char* acc_num, double amount);
 
-int withdrawMoney(const char* accNum, double amount);
+int withdraw_money(const char* acc_num, double amount);
 
-int transferMoney(const char* senderAcc, const char* receiverAcc, double amount);
+int transfer_money(const char* sender_acc, const char* receiver_acc, double amount);
 
-void logTransaction(const char* accNum, TransactionType type, double amount);
+void log_transaction(const char* acc_num, transaction_type type, double amount);

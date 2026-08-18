@@ -19,8 +19,6 @@ typedef struct account {
 
 account *create_account(const char *name, char pin[5], double balance, int is_active);
 
-account *find_account(const char *accNum);
-
 void print_account(const account *acc);
 
 int authenticate(const account *account);
