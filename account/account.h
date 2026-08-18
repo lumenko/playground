@@ -5,33 +5,30 @@
 #ifndef PLAYGROUND_ACCOUNT_H
 #define PLAYGROUND_ACCOUNT_H
 
-#endif //PLAYGROUND_ACCOUNT_H
+
 #include <stddef.h>
 
-#ifndef ACCOUNT_ACCOUNT_H
-#define ACCOUNT_ACCOUNT_H
-
-typedef struct Account {
+typedef struct account {
     char account_number[19];
     char name[50];
     char pin[5];
     double balance;
     int is_active;
-} Account;
-
-#endif
+} account;
 
 
-Account *createAccount(const char *name, char pin[5], double balance, int is_active);
+account *create_account(const char *name, char pin[5], double balance, int is_active);
 
-Account *findAccount(const char *accNum);
+account *find_account(const char *accNum);
 
-void printAccount(const Account *account);
+void print_account(const account *acc);
 
-int authenticate(const Account *account);
+int authenticate(const account *account);
 
-int validatePin(const char *pin);
+int validate_pin(const char *pin);
 
-char *createAccountNumber(char *buffer, size_t bufferSize, int nextId);
+char *create_account_number(char *buffer, size_t buffer_size, int next_id);
 
-unsigned int getSecureRandomNumber(unsigned int max);
+unsigned int get_secure_random_number(unsigned int max);
+
+#endif //PLAYGROUND_ACCOUNT_H

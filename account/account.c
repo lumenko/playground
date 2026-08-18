@@ -8,79 +8,86 @@
 #include <string.h>
 #include <time.h>
 #include "../display.h"
+#include "../data/storage.h"
 
-Account * createAccount(const char *name, char pin[5], const double balance, const int is_active)
+account * create_account(const char *name, char pin[5], const double balance, const int is_active)
 {
-    Account *account = malloc(sizeof(Account));
-    if (account == NULL) {
+    account *acc = malloc(sizeof(account));
+    if (acc == NULL) {
         return NULL;
     }
-    memset(account, 0, sizeof(Account));
+    memset(acc, 0, sizeof(account));
 
-    const int currentUserId = 42;
+    const int current_user_id = 42;
 
-    strcpy(account->name, name);
-    strcpy(account->pin, pin);
+    strcpy(acc->name, name);
+    strcpy(acc->pin, pin);
 
-    account->balance = balance;
-    account->is_active = is_active;
+    acc->balance = balance;
+    acc->is_active = is_active;
 
-    createAccountNumber(account->account_number, sizeof(account->account_number), currentUserId);
+    create_account_number(acc->account_number, sizeof(acc->account_number), current_user_id);
 
-    return account;
+    const int saved = save_account_to_file(acc);
+    if (!saved) {
+        printf("Doslo je do problema pri cuvanju racuna.\nRacun nije sacuvan!\n");
+        getchar();
+    }
+
+    return acc;
 }
 
-Account * findAccount(const char *accNum)
+account * find_account(const char *accNum)
 {
-    Account *account = NULL;
+    account *acc = NULL;
 
-    return account;
+    return acc;
 }
 
-void printAccount(const Account *account)
+void print_account(const account *acc)
 {
-    const char* statusStr = account->is_active ? "AKTIVAN" : "BLOKIRAN";
-    const char* statusColor = account->is_active ? COLOR_GREEN : COLOR_RED;
+    const char* status_str = acc->is_active ? "AKTIVAN" : "BLOKIRAN";
+    const char* status_color = acc->is_active ? COLOR_GREEN : COLOR_RED;
 
     printf("\n" COLOR_CYAN "====================================================\n" COLOR_RESET);
     printf(" " COLOR_BOLD "DETALJI BANKARSKOG RACUNA" COLOR_RESET "\n");
     printf(COLOR_CYAN "====================================================\n" COLOR_RESET);
-    printf("  Broj racuna : " COLOR_BOLD "%s" COLOR_RESET "\n", account->account_number);
-    printf("  Vlasnik     : %s\n", account->name);
-    printf("  Stanje      : " COLOR_YELLOW "%.2f RSD" COLOR_RESET "\n", account->balance);
-    printf("  Status      : %s%s" COLOR_RESET "\n", statusColor, statusStr);
+    printf("  Broj racuna : " COLOR_BOLD "%s" COLOR_RESET "\n", acc->account_number);
+    printf("  Vlasnik     : %s\n", acc->name);
+    printf("  Stanje      : " COLOR_YELLOW "%.2f RSD" COLOR_RESET "\n", acc->balance);
+    printf("  Status      : %s%s" COLOR_RESET "\n", status_color, status_str);
     printf(COLOR_CYAN "----------------------------------------------------\n" COLOR_RESET);
 }
 
-int authenticate(const Account *account)
+int authenticate(const account *account)
 {
     return 1;
 }
 
-int validatePin(const char *pin) {
+int validate_pin(const char *pin) {
     return 1;
 }
 
-char *createAccountNumber(char *buffer, const size_t bufferSize, const int nextId) {
-    if (buffer == NULL || bufferSize < 19) {
+char *create_account_number(char *buffer, const size_t buffer_size, const int next_id) {
+    if (buffer == NULL || buffer_size < 19) {
         return NULL;
     }
 
-    const unsigned int randomPart = getSecureRandomNumber(100);
+    const unsigned int randomPart = get_secure_random_number(100);
 
-    snprintf(buffer, bufferSize, "840-%06d%04d-01", nextId, randomPart);
+    snprintf(buffer, buffer_size, "840-%06d%04d-01", next_id, randomPart);
 
     return buffer;
 }
 
-unsigned int getSecureRandomNumber(const unsigned int max) {
-    unsigned int randVal = 0;
+unsigned int get_secure_random_number(const unsigned int max) {
+    unsigned int rand_val = 0;
     FILE *urandom = fopen("/dev/urandom", "rb");
 
     if (urandom) {
-        fread(&randVal, sizeof(randVal), 1, urandom);
+        fread(&rand_val, sizeof(rand_val), 1, urandom);
         fclose(urandom);
     }
 
-    return randVal % max;
+    return rand_val % max;
 }
