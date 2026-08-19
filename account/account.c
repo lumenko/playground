@@ -10,7 +10,7 @@
 #include "../display.h"
 #include "../data/storage.h"
 
-account * create_account(const char *name, char pin[5], const double balance, const int is_active)
+account * create_account(const char *name, const uint16_t pin, const int64_t balance_cents, const uint8_t is_active)
 {
     account *acc = malloc(sizeof(account));
     if (acc == NULL) {
@@ -21,10 +21,10 @@ account * create_account(const char *name, char pin[5], const double balance, co
     const int current_user_id = 42;
 
     strcpy(acc->name, name);
-    strcpy(acc->pin, pin);
 
-    acc->balance = balance;
+    acc->balance_cents = balance_cents;
     acc->is_active = is_active;
+    acc->pin = pin;
 
     create_account_number(acc->account_number, sizeof(acc->account_number), current_user_id);
 
@@ -47,18 +47,9 @@ void print_account(const account *acc)
     printf(COLOR_CYAN "====================================================\n" COLOR_RESET);
     printf("  Broj racuna : " COLOR_BOLD "%s" COLOR_RESET "\n", acc->account_number);
     printf("  Vlasnik     : %s\n", acc->name);
-    printf("  Stanje      : " COLOR_YELLOW "%.2f RSD" COLOR_RESET "\n", acc->balance);
+    printf("  Stanje      : " COLOR_YELLOW "%.2ld RSD" COLOR_RESET "\n", acc->balance_cents);
     printf("  Status      : %s%s" COLOR_RESET "\n", status_color, status_str);
     printf(COLOR_CYAN "----------------------------------------------------\n" COLOR_RESET);
-}
-
-int authenticate(const account *account)
-{
-    return 1;
-}
-
-int validate_pin(const char *pin) {
-    return 1;
 }
 
 char *create_account_number(char *buffer, const size_t buffer_size, const int next_id) {

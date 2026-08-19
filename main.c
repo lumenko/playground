@@ -11,6 +11,7 @@
 #define TRUE 1
 #define MAX_NAME_LEN 50
 #define MAX_ACCOUNT_LEN 20
+#define PIN 5
 
 static void clear_screen(void) {
     #ifdef _WIN32
@@ -41,6 +42,8 @@ static void display_menu(void) {
 
 static void show_balance_menu(void) {
     char *account_number = malloc(MAX_NAME_LEN * sizeof(char));
+    char pin_buffer[16];
+    uint16_t pin;
     if (account_number == NULL) {
         printf("Nema dovoljno memorije.\n");
         return;
@@ -51,9 +54,27 @@ static void show_balance_menu(void) {
     if (fgets(account_number, MAX_ACCOUNT_LEN, stdin) != NULL) {
         account_number[strcspn(account_number, "\n")] = '\0';
     }
+    printf("Unesite PIN racuna:\n");
+    if (fgets(pin_buffer, sizeof(pin_buffer), stdin) != NULL) {
+        pin_buffer[strcspn(pin_buffer, "\n")] = '\0';
+        char *end_ptr;
+        errno = 0;
+        const long pin_value = strtol(pin_buffer, &end_ptr, 10);
+        if (end_ptr == pin_buffer || errno != 0 || pin_value < 0 || pin_value > 9999) {
+            printf("Neispravan PIN!\n");
+            free(account_number);
+            account_number = NULL;
+            return;
+        }
+        pin = (uint16_t)pin_value;
+    } else {
+        free(account_number);
+        account_number = NULL;
+        return;
+    }
 
     account *acc = malloc(sizeof(account));
-    if (load_account_from_file(account_number, acc) != 1) {
+    if (load_account_from_file(account_number, pin, acc) != 1) {
         printf("Nesto je poslo po zlu!\n");
         return;
     }
@@ -67,7 +88,9 @@ static void show_balance_menu(void) {
 }
 
 static void create_account_menu(void) {
-    char *name = malloc(MAX_NAME_LEN * sizeof(char)), *pin = "1234";
+    char *name = malloc(MAX_NAME_LEN * sizeof(char));
+    uint16_t pin = 0;
+    const int64_t initial_amount_cents = 0;
     if (name == NULL) {
         printf("Nema dovoljno memorije.\n");
         return;
@@ -79,7 +102,21 @@ static void create_account_menu(void) {
         name[strcspn(name, "\n")] = '\0';
     }
 
-    const account *account = create_account(name, pin, 0.0, 1);
+    char pin_buffer[16];
+    printf("Unesite PIN racuna:\n");
+    if (fgets(pin_buffer, sizeof(pin_buffer), stdin) != NULL) {
+        pin_buffer[strcspn(pin_buffer, "\n")] = '\0';
+        char *end_ptr;
+        errno = 0;
+        const long pin_value = strtol(pin_buffer, &end_ptr, 10);
+        if (end_ptr == pin_buffer || errno != 0 || pin_value < 0 || pin_value > 9999) {
+            printf("Neispravan PIN!\n");
+            return;
+        }
+        pin = (uint16_t)pin_value;
+    }
+
+    const account *account = create_account(name, pin, initial_amount_cents, 1);
     if (account == NULL) {
         printf("Doslo je do greske.\n");
         free(name);

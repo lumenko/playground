@@ -23,8 +23,8 @@ int save_account_to_file(const account *acc) {
     return written == 1;
 }
 
-int load_account_from_file(const char *account_number, account *out_account) {
-    if (account_number == NULL || out_account == NULL) {
+int load_account_from_file(const char *account_number, const uint16_t pin, account *out_account) {
+    if (account_number == NULL || pin == 0 || out_account == NULL) {
         return 0;
     }
 
@@ -36,13 +36,15 @@ int load_account_from_file(const char *account_number, account *out_account) {
 
     account tmp_account;
     while (fread(&tmp_account, sizeof(account), 1, file) == 1) {
-        if (strcmp(tmp_account.account_number, account_number) == 0) {
+        if (strcmp(tmp_account.account_number, account_number) == 0 && tmp_account.pin == pin) {
             *out_account = tmp_account;
             fclose(file);
 
             return 1;
         }
     }
+
+    printf("Nepostojeci racun!\n");
 
     fclose(file);
     return 0;

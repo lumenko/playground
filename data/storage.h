@@ -9,7 +9,7 @@
 
 int save_account_to_file(const account* acc);
 
-int load_account_from_file(const char * account_number, account *out_account);
+int load_account_from_file(const char * account_number, uint16_t pin, account *out_account);
 
 int update_account_in_file(account* acc);
 
