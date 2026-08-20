@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include "../display.h"
+#include "../display/display.h"
 #include "../data/storage.h"
 
 account * create_account(const char *name, const uint16_t pin, const int64_t balance_cents, const uint8_t is_active)

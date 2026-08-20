@@ -14,5 +14,9 @@
 #define COLOR_BLUE    "\033[34m"
 #define COLOR_GRAY    "\033[90m"
 
+void clear_screen(void);
+
+void display_menu(void);
+
 #endif //PLAYGROUND_DISPLAY_H
 
