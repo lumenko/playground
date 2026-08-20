@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <string.h>
 
-#define ACCOUNTS_FILE "accounts.bin"
+#define ACCOUNTS_FILE "accounts.txt"
 
 int save_account_to_file(const account *acc) {
     FILE *file = fopen(ACCOUNTS_FILE, "ab");
