@@ -20,7 +20,8 @@ account * create_account(const char *name, const uint16_t pin, const int64_t bal
 
     const int current_user_id = 42;
 
-    strcpy(acc->name, name);
+    strncpy(acc->name, name, sizeof(acc->name) - 1);
+    acc->name[sizeof(acc->name) - 1] = '\0';
 
     acc->balance_cents = balance_cents;
     acc->is_active = is_active;
