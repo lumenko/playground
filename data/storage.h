@@ -7,14 +7,14 @@
 
 #include "../account/account.h"
 
-int save_account_to_file(const account* acc);
+int save_account_to_file(const account *acc);
 
-int load_account_from_file(const char * account_number, uint16_t pin, account *out_account);
+int load_account_from_file(const char *account_number, uint16_t pin, account *out_account);
 
-int update_account_in_file(account* acc);
+int update_account_in_file(const account *acc);
 
 void load_all_accounts();
 
-void read_transaction_history(char* acc_num);
+void read_transaction_history(const char *acc_num);
 
 #endif //PLAYGROUND_STORAGE_H

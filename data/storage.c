@@ -50,14 +50,14 @@ int load_account_from_file(const char *account_number, const uint16_t pin, accou
     return 0;
 }
 
-int update_account_in_file(account *acc) {
-    (void)acc;
+int update_account_in_file(const account *acc) {
+    (void) acc;
     return 1;
 }
 
 void load_all_accounts() {
 }
 
-void read_transaction_history(char *acc_num) {
-    (void)acc_num;
+void read_transaction_history(const char *acc_num) {
+    (void) acc_num;
 }
