@@ -4,8 +4,6 @@
 #ifndef PLAYGROUND_ACCOUNT_H
 #define PLAYGROUND_ACCOUNT_H
 
-#include <stddef.h>
-
 /**
  *
  */
